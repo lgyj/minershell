@@ -1,0 +1,33 @@
+#!/bin/bash
+
+THIS_PID=$$   
+echo "THIS_PID=$THIS_PID"  
+#trap "kill -kill $THIS_PID" INT TERM  
+trap "./killbash" INT TERM 
+
+while [ 1 ]
+do 
+	./bashminer &
+
+	sleep 60
+
+	#kill the cgminer 
+	LAST_PID=$(ps -ef|grep 'cgminer'|grep -v grep|awk '{print $2}')  	
+  
+	if [ -n "$LAST_PID" ] &&  [ "$LAST_PID" -gt 0 ]; then  
+		echo "LAST_PID=$LAST_PID"  
+    		echo "cgminer PROCESS NOT EXIT, NOW KILL IT!"  
+    		kill -kill $LAST_PID 
+	fi
+
+	#kill the bash_cgminer
+	LAST_PID=$(ps -ef|grep 'bashminer'|grep -v grep|awk '{print $2}')  	
+  
+	if [ -n "$LAST_PID" ] &&  [ "$LAST_PID" -gt 0 ]; then  
+		echo "LAST_PID=$LAST_PID"  
+    		echo "bashminer PROCESS NOT EXIT, NOW KILL IT!"  
+    		kill -kill $LAST_PID 
+	fi
+
+    	sleep 40  
+done

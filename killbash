@@ -1,0 +1,25 @@
+#!/bin/bash
+
+#kill the cgminer 
+LAST_PID=$(ps -ef|grep 'cgminer'|grep -v grep|awk '{print $2}')  	
+
+if [ -n "$LAST_PID" ] &&  [ "$LAST_PID" -gt 0 ]; then  
+	echo "LAST_PID=$LAST_PID"  
+	echo "cgminer PROCESS NOT EXIT, NOW KILL IT!"  
+	kill -kill $LAST_PID 
+fi
+
+#kill the bash_cgminer
+LAST_PID=$(ps -ef|grep 'bashminer'|grep -v grep|awk '{print $2}')  	
+
+if [ -n "$LAST_PID" ] &&  [ "$LAST_PID" -gt 0 ]; then  
+	echo "LAST_PID=$LAST_PID"  
+	echo "bashminer PROCESS NOT EXIT, NOW KILL IT!"  
+	kill -kill $LAST_PID 
+fi
+
+#kill the parent bash
+PARENT_PID=$PPID   
+echo "PARENT_PID=$PARENT_PID"  
+kill -kill $PARENT_PID
+
